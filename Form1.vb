@@ -10,7 +10,7 @@
 
         Dim output As Double = calculate()
 
-        If output = 0 Then
+        If output = 0 And (inputBox1.Text Is Nothing Or {"0", "-0"}.Contains(inputBox1.Text)) Then
             history += "0" & vbNewLine
             historyBox1.Text = history
         ElseIf Not output = Nothing And operation Is Nothing Then
@@ -140,7 +140,7 @@
     Private Sub handleKeypress(sender As Object, e As KeyEventArgs)
         Dim numberKeys As Object() = {Keys.D1, Keys.D2, Keys.D3, Keys.D4, Keys.D5, Keys.D6, Keys.D7, Keys.D8, Keys.D9, Keys.D0}
 
-        If numberKeys.Contains(e.KeyCode) Then
+        If numberKeys.Contains(e.KeyCode) And Not e.Modifiers = Keys.Shift Then
             handleNumkeyPresses(sender, e)
         Else
             handleOtherPresses(sender, e)
@@ -157,10 +157,12 @@
                 buttonSubtract_Click(sender, e)
             Case (Keys.OemPeriod)
                 buttonDot_Click(sender, e)
+            Case (Keys.OemQuestion)
+                buttonDivide_Click(sender, e)
             Case (Keys.Enter)
                 btnCalculate_Click(sender, e)
             Case (Keys.Back)
-                inputBox1.Text = inputBox1.Text.Substring(0, inputBox1.Text.Length - 1)
+                If Not inputBox1.Text = "" Then inputBox1.Text = inputBox1.Text.Substring(0, inputBox1.Text.Length - 1)
             Case Else
 
         End Select
